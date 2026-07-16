@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+*.env
+.env.local
+.env.production
+
+# Database — never commit the live DB
+backend/leadcrawler.db
+backend/*.db-shm
+backend/*.db-wal
+
+# Logs
+*.log
+logs/
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code internal
+frontend/CLAUDE.md
+frontend/AGENTS.md
+.claude/
