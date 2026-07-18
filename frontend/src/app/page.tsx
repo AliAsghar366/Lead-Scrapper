@@ -14,7 +14,7 @@ export default function HomePage() {
   const [activeListId, setActiveListId] = useState<number | null>(null);
   const [lists, setLists] = useState<LeadList[]>([]);
   const [savedSearchQuery, setSavedSearchQuery] = useState<string>("");
-  const { job, error } = useJobPoller(activeJobId);
+  const { job, error } = useJobPoller(activeJobId, () => setActiveJobId(null));
 
   useEffect(() => {
     api.getLists().then(setLists).catch(() => {});

@@ -1,4 +1,12 @@
+import os
 from pydantic_settings import BaseSettings
+
+
+def _default_db_url() -> str:
+    # Use /data/ if it exists (Railway persistent volume), else local file
+    if os.path.isdir("/data"):
+        return "sqlite+aiosqlite:////data/leadcrawler.db"
+    return "sqlite+aiosqlite:///./leadcrawler.db"
 
 
 class Settings(BaseSettings):
@@ -7,8 +15,8 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     ENVIRONMENT: str = "production"
 
-    # Database — SQLite by default, swap to PostgreSQL in prod
-    DATABASE_URL: str = "sqlite+aiosqlite:///./leadcrawler.db"
+    # Database — SQLite by default, swap to PostgreSQL via DATABASE_URL env var
+    DATABASE_URL: str = _default_db_url()
 
     # CORS
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
