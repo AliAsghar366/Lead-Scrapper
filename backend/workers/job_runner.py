@@ -42,12 +42,12 @@ async def _pause_checkpoint(job_id: int) -> bool:
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 async def _bulk_save(db, job_id: int, entities: list[dict], entity_type: str, source: str):
-    """Insert entities in batches to avoid large transactions."""
+    """Insert entities in batches and push live result_count every batch."""
     for i, entity in enumerate(entities):
         name = entity.get("name")
-        if not name:           # never save nameless entities
+        if not name:
             continue
-        lead_data = {
+        await crud.insert_lead(db, {
             "job_id":     job_id,
             "name":       name,
             "category":   entity_type,
@@ -57,9 +57,11 @@ async def _bulk_save(db, job_id: int, entities: list[dict], entity_type: str, so
             "address":    entity.get("address") or None,
             "source_url": entity.get("website") or None,
             "source":     source,
-        }
-        await crud.insert_lead(db, lead_data)
+        })
         if (i + 1) % _BATCH_SIZE == 0:
+            await db.commit()
+            _, count = await crud.get_leads(db, job_id=job_id, page=1, page_size=1)
+            await crud.update_job_status(db, job_id, "running", result_count=count)
             await db.commit()
     await db.commit()
 

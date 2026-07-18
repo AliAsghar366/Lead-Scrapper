@@ -132,20 +132,12 @@ export default function HomePage() {
             )}
 
             {showTable ? (
-              (activeJobId ? hasResults : true) ? (
-                <ResultsTable
-                  jobId={activeJobId}
-                  liveRefresh={isRunning ?? false}
-                  listId={activeListId}
-                  lists={lists}
-                />
-              ) : (
-                isRunning ? (
-                  <div className="text-center py-8 text-zinc-400 text-sm">
-                    Searching… results will appear here as they are found.
-                  </div>
-                ) : null
-              )
+              <ResultsTable
+                jobId={activeJobId}
+                liveRefresh={isRunning ?? false}
+                listId={activeListId}
+                lists={lists}
+              />
             ) : (
               <div className="text-center py-16 text-zinc-400 dark:text-zinc-600">
                 <svg className="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
