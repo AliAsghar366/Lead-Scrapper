@@ -210,7 +210,7 @@ async def run_job(job_id: int, exclude_existing: bool = False):
             guess_candidates = [
                 e for e in osm_without_site
                 if len(re.sub(r"[^a-z0-9]", "", e["name"].lower())) >= 5
-            ][:100]
+            ][:300]
 
             guessed_names: set[str] = set()
 

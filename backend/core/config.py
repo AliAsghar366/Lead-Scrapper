@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     RESPECT_ROBOTS_TXT: bool = True
 
     # Discovery
-    SEARCH_RESULTS_PER_QUERY: int = 10  # how many URLs to try per search query
-    MAX_DISCOVERY_URLS: int = 200       # total cap per job
+    SEARCH_RESULTS_PER_QUERY: int = 20  # how many URLs to try per search query
+    MAX_DISCOVERY_URLS: int = 500       # total cap per job
 
     # OSM
     OVERPASS_BASE_URL: str = "https://overpass-api.de/api/interpreter"
