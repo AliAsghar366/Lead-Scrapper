@@ -149,9 +149,16 @@ ENTITY_TYPES = [
                            ["tourism=apartment"]),
 
     # ── Tech & Business ───────────────────────────────────────────────────────
+    ("startup",          ["startup", "startups", "tech startup", "tech startups",
+                          "saas", "saas company", "saas companies",
+                          "fintech", "edtech", "healthtech", "ai startup",
+                          "early stage", "seed stage", "seed funded",
+                          "vc backed", "venture backed", "venture funded",
+                          "new business", "new businesses"],
+                         ["office=company", "office=it"]),
     ("software company", ["software company", "software companies", "tech company",
                           "tech companies", "it company", "software house",
-                          "software houses", "software firm", "startup", "tech startup"],
+                          "software houses", "software firm"],
                          ["office=it", "office=company"]),
     ("data center",     ["data center", "data centre", "datacenter", "colocation",
                          "server farm", "hosting"],

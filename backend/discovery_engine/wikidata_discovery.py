@@ -73,6 +73,7 @@ _ENTITY_QIDS: dict[str, list[str]] = {
     "serviced apartment":   ["Q27686"],
 
     # ── Tech & Business ───────────────────────────────────────────────────────
+    "startup":              ["Q216107", "Q4830453", "Q1650915"],
     "software company":     ["Q1650915","Q4182287"],
     "software house":       ["Q1650915","Q4182287"],
     "data center":          ["Q247153"],

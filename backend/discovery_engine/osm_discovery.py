@@ -189,6 +189,10 @@ _TAG_MAP: dict[str, list[tuple[str, str]]] = {
     ],
 
     # ── Tech & Business ───────────────────────────────────────────────────────
+    "startup": [
+        ("office", "company"), ("office", "it"), ("office", "technology"),
+        ("office", "startup"),
+    ],
     "software company": [
         ("office", "it"), ("office", "company"), ("office", "technology"),
     ],

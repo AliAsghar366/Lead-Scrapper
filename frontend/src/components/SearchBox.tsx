@@ -8,15 +8,22 @@ interface Props {
   initialQuery?: string;
 }
 
-const EXAMPLES = [
+const EXAMPLES_CITY = [
   "restaurants in Lahore",
-  "data centers in New York",
-  "schools in Cambridge",
   "hospitals in Karachi",
-  "software companies in Berlin",
-  "law firms in Toronto",
+  "schools in Cambridge",
   "hotels in Dubai",
+  "law firms in Toronto",
   "dentists in Chicago",
+];
+
+const EXAMPLES_STARTUP = [
+  "startups in Germany",
+  "startups in United Kingdom",
+  "tech startups in Singapore",
+  "fintech startups in United States",
+  "saas companies in Canada",
+  "ai startups in France",
 ];
 
 export default function SearchBox({ onJobStarted, onSaveSearch, initialQuery }: Props) {
@@ -47,7 +54,7 @@ export default function SearchBox({ onJobStarted, onSaveSearch, initialQuery }: 
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. restaurants in Lahore"
+          placeholder="e.g. startups in Germany  or  restaurants in Lahore"
           className="flex-1 px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-600
                      bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100
                      focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -85,18 +92,35 @@ export default function SearchBox({ onJobStarted, onSaveSearch, initialQuery }: 
         <p className="mt-2 text-sm text-red-500">{error}</p>
       )}
 
-      <div className="mt-3 flex flex-wrap gap-2">
-        {EXAMPLES.map((ex) => (
-          <button
-            key={ex}
-            onClick={() => setQuery(ex)}
-            className="px-3 py-1 text-xs bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200
-                       dark:hover:bg-zinc-600 rounded-full text-zinc-600 dark:text-zinc-300
-                       transition-colors"
-          >
-            {ex}
-          </button>
-        ))}
+      <div className="mt-3 space-y-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0">By city/state:</span>
+          {EXAMPLES_CITY.map((ex) => (
+            <button
+              key={ex}
+              onClick={() => setQuery(ex)}
+              className="px-3 py-1 text-xs bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200
+                         dark:hover:bg-zinc-600 rounded-full text-zinc-600 dark:text-zinc-300
+                         transition-colors"
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0">Startups by country:</span>
+          {EXAMPLES_STARTUP.map((ex) => (
+            <button
+              key={ex}
+              onClick={() => setQuery(ex)}
+              className="px-3 py-1 text-xs bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100
+                         dark:hover:bg-blue-900/50 rounded-full text-blue-600 dark:text-blue-400
+                         transition-colors"
+            >
+              {ex}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
