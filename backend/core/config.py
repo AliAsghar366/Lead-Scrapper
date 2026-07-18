@@ -18,11 +18,13 @@ class Settings(BaseSettings):
     # Database — SQLite by default, swap to PostgreSQL via DATABASE_URL env var
     DATABASE_URL: str = _default_db_url()
 
-    # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
+    # CORS — "*" allows any origin (Vercel, local dev, etc.)
+    CORS_ORIGINS: str = "*"
 
     @property
     def cors_origins_list(self) -> list[str]:
+        if self.CORS_ORIGINS.strip() == "*":
+            return ["*"]
         return [o.strip() for o in self.CORS_ORIGINS.split(",")]
 
     # Crawler behaviour
