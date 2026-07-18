@@ -75,6 +75,12 @@ export default function ResultsTable({ jobId, liveRefresh, listId, lists }: Prop
   const [bulkAction, setBulkAction] = useState("");
   const [allTagsList, setAllTagsList] = useState<string[]>([]);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Ref so poll callbacks always read the *current* liveRefresh without stale closure
+  const liveRefreshRef = useRef(liveRefresh);
+  // Generation counter — stale fetch responses are silently dropped
+  const fetchGenRef = useRef(0);
+
+  useEffect(() => { liveRefreshRef.current = liveRefresh; }, [liveRefresh]);
 
   const activeFilterCount = Object.values(filters).filter(v => v !== undefined && v !== "" && v !== false).length;
 
@@ -87,47 +93,45 @@ export default function ResultsTable({ jobId, liveRefresh, listId, lists }: Prop
   }
 
   async function fetchPage(p: number) {
+    const gen = ++fetchGenRef.current;
     setLoading(true);
     try {
       const f = buildFilters();
-      let result: LeadListResponse;
-      if (jobId) {
-        result = await api.getResults(jobId, p, 50, f);
-      } else {
-        result = await api.getLeads(p, 50, f);
-      }
-      setData(result);
-    } finally { setLoading(false); }
+      const result = jobId
+        ? await api.getResults(jobId, p, 50, f)
+        : await api.getLeads(p, 50, f);
+      if (fetchGenRef.current === gen) setData(result);
+    } catch { /* ignore */ }
+    finally { if (fetchGenRef.current === gen) setLoading(false); }
   }
 
   function schedulePoll(p: number) {
     timerRef.current = setTimeout(async () => {
+      // Always read the live value — never use captured closure
+      if (!liveRefreshRef.current) {
+        // Job just finished: do one final fetch for the definitive count
+        fetchPage(p);
+        return;
+      }
+      const gen = ++fetchGenRef.current;
       try {
         const f = buildFilters();
         const result = jobId
           ? await api.getResults(jobId, p, 50, f)
           : await api.getLeads(p, 50, f);
-        setData(result);
+        if (fetchGenRef.current === gen) setData(result);
       } catch { /* ignore */ }
-      if (liveRefresh) schedulePoll(p);
+      schedulePoll(p);
     }, 3000);
   }
 
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setSelected(new Set());
-    fetchPage(page).then(() => { if (liveRefresh) schedulePoll(page); });
+    fetchPage(page).then(() => { if (liveRefreshRef.current) schedulePoll(page); });
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobId, page, filters, sortBy, sortDir, listId]);
-
-  useEffect(() => {
-    if (!liveRefresh) {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      fetchPage(page);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [liveRefresh]);
 
   function toggleSelect(id: number) {
     setSelected(prev => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
