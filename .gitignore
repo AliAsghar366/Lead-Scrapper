@@ -45,3 +45,7 @@ Thumbs.db
 frontend/CLAUDE.md
 frontend/AGENTS.md
 .claude/
+
+# Proposal files (not part of the app)
+proposal.html
+LeadCrawler_AI_Proposal.pdf

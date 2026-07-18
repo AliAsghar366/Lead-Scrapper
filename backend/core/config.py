@@ -4,8 +4,8 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     APP_NAME: str = "UniversalLeadCrawler"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
-    ENVIRONMENT: str = "development"
+    DEBUG: bool = False
+    ENVIRONMENT: str = "production"
 
     # Database — SQLite by default, swap to PostgreSQL in prod
     DATABASE_URL: str = "sqlite+aiosqlite:///./leadcrawler.db"
@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     CRAWLER_TIMEOUT: int = 20           # seconds per page
     CRAWL_DELAY: float = 1.0            # seconds between pages of same domain
     MAX_PAGES_PER_SITE: int = 3         # homepage + contact + about
-    MAX_CONCURRENT_CRAWLS: int = 15     # parallel domain crawls
+    MAX_CONCURRENT_CRAWLS: int = 5      # parallel domain crawls (low for free tier RAM)
     RESPECT_ROBOTS_TXT: bool = True
 
     # Discovery
